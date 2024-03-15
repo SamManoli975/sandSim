@@ -47,10 +47,11 @@ function changecolor(row,col,color){
 }
 //get the position of the click in the canvas
 function getClickPosition(e){
-    var xPosition = e.clientX;
-    var yPosition = e.clientY;
+    var rect = canvas.getBoundingClientRect(); // Get the position of the canvas relative to the window
+    var xPosition = e.clientX - rect.left; // Calculate the x position relative to the canvas
+    var yPosition = e.clientY - rect.top; // Calculate the y position relative to the canvas
     console.log(xPosition,yPosition);//debug
-    //call the function to change the color of the clicked box
+    //call the function to change the color of the clicked
     changecolor(Math.floor(xPosition/40),Math.floor(yPosition/40),"#000000");
     console.log(Math.floor(xPosition/40),Math.floor(yPosition/40));
 }

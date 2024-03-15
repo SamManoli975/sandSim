@@ -1,8 +1,14 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-const w = 500;
-const h = 500;
-const boxSize = 20; // Adjust the size of each box as needed
+canvas.addEventListener("click", getClickPosition, false)
+
+
+const h = window.innerHeight;
+const w = window.innerWidth;
+
+const boxSize = 40; // Adjust the size of each box as needed
+canvas.width = w;
+canvas.height = h;
 
 // Calculate the number of rows and columns
 const row = Math.floor(h / boxSize);
@@ -35,4 +41,18 @@ function draw(){
         }
     }
 }
+function changecolor(row,col,color){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(row*40+1,col*40+1,boxSize-2,boxSize-2);
+}
+//get the position of the click in the canvas
+function getClickPosition(e){
+    var xPosition = e.clientX;
+    var yPosition = e.clientY;
+    console.log(xPosition,yPosition);//debug
+    //call the function to change the color of the clicked box
+    changecolor(Math.floor(xPosition/40),Math.floor(yPosition/40),"#000000");
+    console.log(Math.floor(xPosition/40),Math.floor(yPosition/40));
+}
 draw();
+changecolor();

@@ -13,28 +13,20 @@ canvas.height = h;
 // Calculate the number of row and columns
 const row = Math.ceil(h / boxSize);
 const col = Math.ceil(w / boxSize);
+arr = Make2Darray(row,col);
 console.log(w,h,row,col)
 
-let arr = [];
-
-for(let i=0;i<row;i++){
-    arr[i] = [];
-        for(let j=0;j<col;j++){
-            arr[i][j] = 0;
-            // arr[i][j] = "#E63E1A";
-
-
+function Make2Darray(cols, rows) {
+    let arr = new Array(cols);
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = new Array(rows);
+      // Fill the array with 0s
+      for (let j = 0; j < arr[i].length; j++) {
+        arr[i][j] = 0;
+      }
     }
-}
-function make2Darray(rows,cols){
-    let arr = new Array(rows);
-    for(let i = 0;i<arr.length;i++){
-        arr[i] = new Array(cols);
-        for(let j =0;j<arr[i].length;j++){
-            arr[i][j] = 0;
-        }
-    }
-}
+    return arr;
+  }
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -58,11 +50,11 @@ function draw() {
 }
 
 function changecolor(row, col, color) {
-    if (row >= 0 && row < arr.length && col >= 0 && col < arr[0].length) {
-        arr[row][col] = 1;
-        ctx.fillStyle = color;
-        ctx.fillRect(row * boxSize + 1, col * boxSize + 1, boxSize - 2, boxSize - 2);
-    }
+    
+    arr[col][row] = 1;
+    ctx.fillStyle = color;
+    ctx.fillRect(row * boxSize + 1, col * boxSize + 1, boxSize - 2, boxSize - 2);
+    
 }
 
 
@@ -78,11 +70,10 @@ function getClickPosition(e){
     console.log(Math.floor(xPosition/boxSize),Math.floor(yPosition/boxSize));
 }
 
-draw();
-changecolor();
 
-let nextGrid = make2Darray(row, col);
-  
+function fall() {
+    let nextGrid = Make2Darray(row, col);
+    
     // Check every cell
     for (let i = 0; i < row; i++) {
         for (let j = 0; j < col ; j++) {
@@ -90,16 +81,20 @@ let nextGrid = make2Darray(row, col);
             let state = arr[i][j];
             console.log(state);
             // If it's a piece of sand!
-            if (state > 0) {
+            if (state === 1) {
                 // What is below?
-                let below = arr[i][j + 1];
-                if (below === 0) {
-                    nextGrid[i][j + 1] = state;
+                let belowRow = i + 1;
+                if (belowRow < row && arr[belowRow][j] === 0) {
+                    nextGrid[belowRow][j] = 1;
                 // Stay put!
                 } else {
-                    nextGrid[i][j] = state;
+                    nextGrid[i][j] = 1;
                 }
             }
         }
+    }
     arr = nextGrid;
+    draw();
 }
+// fall();
+setInterval(fall,100);

@@ -63,15 +63,29 @@ function changecolor(row, col, color) {
 
 
     
-//get the position of the click in the canvas
-function getClickPosition(e){
+let isMouseDown = false;
 
-    var xPosition = e.clientX // Calculate the x position relative to the canvas
-    var yPosition = e.clientY// Calculate the y position relative to the canvas
-    console.log(xPosition,yPosition);//debug
-    //call the function to change the color of the clicked
-    changecolor(Math.floor(xPosition/boxSize),Math.floor(yPosition/boxSize),"#000000");
-    console.log(Math.floor(xPosition/boxSize),Math.floor(yPosition/boxSize));
+canvas.addEventListener("mousedown", function(e) {
+    isMouseDown = true;
+    getClickPosition(e);
+});
+
+canvas.addEventListener("mousemove", function(e) {
+    if (isMouseDown) {
+        getClickPosition(e);
+    }
+});
+
+canvas.addEventListener("mouseup", function() {
+    isMouseDown = false;
+});
+
+function getClickPosition(e){
+    var xPosition = e.clientX; // Calculate the x position relative to the canvas
+    var yPosition = e.clientY; // Calculate the y position relative to the canvas
+    console.log(xPosition,yPosition); // Debug
+    // Call the function to change the color of the clicked
+    changecolor(Math.floor(xPosition/boxSize), Math.floor(yPosition/boxSize), "#000000");
 }
 
 

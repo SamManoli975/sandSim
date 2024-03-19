@@ -49,6 +49,10 @@ function draw() {
     }
 }
 
+function within(index) {
+    return index >= 0 && index < col;
+}
+
 function changecolor(row, col, color) {
     
     arr[col][row] = 1;
@@ -72,29 +76,44 @@ function getClickPosition(e){
 
 
 function fall() {
-    let nextGrid = Make2Darray(row, col);
-    
+    let nextarr = Make2Darray(row, col);
+  
     // Check every cell
     for (let i = 0; i < row; i++) {
         for (let j = 0; j < col ; j++) {
             // What is the state?
             let state = arr[i][j];
-            console.log(state);
+            
             // If it's a piece of sand!
-            if (state === 1) {
+            if (state > 0) {
                 // What is below?
-                let belowRow = i + 1;
-                if (belowRow < row && arr[belowRow][j] === 0) {
-                    nextGrid[belowRow][j] = 1;
-                // Stay put!
+                let below = (i + 1 < row) ? arr[i + 1][j] : -1;
+                
+                // Randomly fall left or right
+                let dir = 1;
+                if (Math.random() < 0.5) {
+                    dir *= -1;
+                }
+                
+                // Check below left or right
+                let belowA = within(j + dir) ? (i + 1 < row ? arr[i + 1][j + dir] : -1) : -1;
+                
+                // Can it fall below or left or right?
+                if (below === 0) {
+                    nextarr[i + 1][j] = state; // Fall straight down
+                } else if (belowA === 0) {
+                    nextarr[i + 1][j + dir] = state; // Fall diagonally left or right
                 } else {
-                    nextGrid[i][j] = 1;
+                    nextarr[i][j] = state; // Stay put
                 }
             }
         }
     }
-    arr = nextGrid;
+    arr = nextarr;
     draw();
 }
-// fall();
-setInterval(fall,100);
+
+
+setInterval(fall, 50);
+
+

@@ -3,10 +3,10 @@ const ctx = canvas.getContext('2d');
 canvas.addEventListener("click", getClickPosition, false)
 
 
-const h =500;
-const w =500;
+const h =700;
+const w =700;
 
-const boxSize = 25; // Adjust the size of each box as needed
+const boxSize = 15; // Adjust the size of each box as needed
 canvas.width = w;
 canvas.height = h;
 
